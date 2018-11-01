@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        JV BanTracker
 // @author      Snizzle
-// @version     1.2
+// @version     1.3
 // @downloadURL https://github.com/Snizzle-jvc/BanTracker/raw/master/BanTracker.user.js
 // @updateURL   https://github.com/Snizzle-jvc/BanTracker/raw/master/BanTracker.user.js
 // @supportURL  http://www.jeuxvideo.com/messages-prives/nouveau.php?all_dest=Snizzle;Snitchzzle
@@ -48,6 +48,7 @@ $(function(b) {
   });
   b(".bantracker-btn").click(function() {
     var a = b(".infos-pseudo h1").html().trim(), c = JSON.parse(localStorage.getItem("bantracker")) || [];
+    a = a.toLowerCase();
     c.push(a);
     localStorage.setItem("bantracker", JSON.stringify(c));
     b(this).hide();
