@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        JV BanTracker
 // @author      Snizzle
-// @version     1.1
+// @version     1.2
 // @downloadURL https://github.com/Snizzle-jvc/BanTracker/raw/master/BanTracker.user.js
 // @updateURL   https://github.com/Snizzle-jvc/BanTracker/raw/master/BanTracker.user.js
 // @supportURL  http://www.jeuxvideo.com/messages-prives/nouveau.php?all_dest=Snizzle;Snitchzzle
@@ -20,7 +20,7 @@ $(function(b) {
   b(".col-right").prepend('<div class="panel panel-jv-forum panel-bantracker"><div class="panel-heading panel-heading-bantracker">Ban Tracker</div><div class="panel-body panel-body-bantracker" style="text-align:center;"><div class="scrollable-content bloc-info-forum" id="liste-bantracker"></div></div></div>');
   (function() {
     for (var a = 0; a < d.length; a++) {
-      b("#liste-bantracker").append("<span class='btn btn-actu-new-list-forum btn-list-bantracker' title='Supprimer ce pseudo de BanTracker' id='" + d[a].toLowerCase() + "' style='margin-right:5px;margin-top:5px'>" + d[a] + "<span class='picto-msg-croix pull-right' style='margin: 5px 5px 0 5px;'></span></span>");
+      b("#liste-bantracker").append("<span class='btn btn-actu-new-list-forum btn-list-bantracker' title='Supprimer ce pseudo de BanTracker' id='" + d[a].toLowerCase() + "' style='margin-right:5px;margin-top:5px'>" + d[a].toLowerCase() + "<span class='picto-msg-croix pull-right' style='margin: 5px 5px 0 5px;'></span></span>");
       var c = "http://www.jeuxvideo.com/profil/" + d[a].toLowerCase() + "?mode=infos";
       console.log(c);
       b.get(c, function(a) {
@@ -32,10 +32,16 @@ $(function(b) {
   b(".btn-add-bantracker").click(function() {
     var a = b(".user-add-bantracker").val(), c = "http://www.jeuxvideo.com/profil/" + a.toLowerCase() + "?mode=infos";
     b.get(c, function(c) {
-      b(c).find("li .lien-profil").length && (c = JSON.parse(localStorage.getItem("bantracker")) || [], c.push(a), localStorage.setItem("bantracker", JSON.stringify(c)), b("#liste-bantracker").append("<span class='btn btn-actu-new-list-forum btn-list-bantracker' title='Supprimer ce pseudo de BanTracker' id='" + a.toLowerCase() + "' style='margin-right:5px;margin-top:5px'>" + a + "<span class='picto-msg-croix pull-right' style='margin: 5px 5px 0 5px;'></span></span>"));
+      if (b(c).find("li .lien-profil").length) {
+        c = JSON.parse(localStorage.getItem("bantracker")) || [];
+        var d = a.toLowerCase();
+        c.push(d);
+        localStorage.setItem("bantracker", JSON.stringify(c));
+        b("#liste-bantracker").append("<span class='btn btn-actu-new-list-forum btn-list-bantracker' title='Supprimer ce pseudo de BanTracker' id='" + a.toLowerCase() + "' style='margin-right:5px;margin-top:5px'>" + a.toLowerCase() + "<span class='picto-msg-croix pull-right' style='margin: 5px 5px 0 5px;'></span></span>");
+      }
     });
   });
-  b(".btn-list-bantracker").click(function() {
+  b("#liste-bantracker").on("click", ".btn.btn-actu-new-list-forum.btn-list-bantracker", function() {
     var a = b(this).attr("id"), c = JSON.parse(localStorage.getItem("bantracker"));
     a = c.indexOf(a);
     0 <= a && (c.splice(a, 1), b(this).hide(), localStorage.setItem("bantracker", JSON.stringify(c)));
